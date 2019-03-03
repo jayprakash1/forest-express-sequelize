@@ -11,7 +11,8 @@ function ResourceFinder(model, params, withIncludes) {
     var includes = [];
 
     _.values(model.associations).forEach(function (association) {
-      if (['HasOne', 'BelongsTo'].indexOf(association.associationType) > -1) {
+      // TODO: scope is sometimes defined as function in model defined for modified graphql and sequelize..so this is not proper sequelize usecase
+      if (['HasOne', 'BelongsTo'].indexOf(association.associationType) > -1 && _.isFunction(association.scope) == false) {
         includes.push({
           model: association.target.unscoped(),
           as: association.associationAccessor
