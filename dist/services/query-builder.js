@@ -28,7 +28,7 @@ function QueryBuilder(model, opts, params) {
     var includes = [];
     _.values(modelForIncludes.associations).forEach(function (association) {
       if (!fieldNamesRequested || fieldNamesRequested.indexOf(association.as) !== -1) {
-        if (['HasOne', 'BelongsTo'].indexOf(association.associationType) > -1) {
+        if (['HasOne', 'BelongsTo'].indexOf(association.associationType) > -1 && _.isFunction(association.scope) == false) {
           includes.push({
             model: association.target.unscoped(),
             as: association.associationAccessor

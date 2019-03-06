@@ -151,7 +151,7 @@ function SearchBuilder(model, opts, params, fieldNamesRequested) {
     if (parseInt(params.searchExtended)) {
       _.each(associations, function (association) {
         if (!fieldNamesRequested || fieldNamesRequested.indexOf(association.as) !== -1) {
-          if (['HasOne', 'BelongsTo'].indexOf(association.associationType) > -1) {
+          if (['HasOne', 'BelongsTo'].indexOf(association.associationType) > -1 && _.isFunction(association.scope) == false) {
 
             var modelAssociation = association.target;
             var schemaAssociation = Interface.Schemas.schemas[modelAssociation.name];
