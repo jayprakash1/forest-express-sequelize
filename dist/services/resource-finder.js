@@ -40,6 +40,7 @@ function ResourceFinder(model, params, withIncludes) {
       conditions.where[schema.idField] = params.recordId;
     }
 
+    conditions.requestUser = { role: 'admin' };
     return model.find(conditions);
   };
 }

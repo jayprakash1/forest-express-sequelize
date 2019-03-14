@@ -103,7 +103,8 @@ function PieStatGetter(model, params, opts) {
       where: this.getFilters(),
       group: getGroupBy(),
       order: [[opts.sequelize.literal(ALIAS_AGGREGATE), 'DESC']],
-      raw: true
+      raw: true,
+      requestUser: { role: 'admin' }
     }).then(formatResults).then(function (records) {
       return { value: records };
     });

@@ -125,7 +125,8 @@ function ResourcesGetter(model, opts, params) {
           include: include,
           order: queryBuilder.getOrder(),
           offset: queryBuilder.getSkip(),
-          limit: queryBuilder.getLimit()
+          limit: queryBuilder.getLimit(),
+          requestUser: {role: 'admin'},
         };
 
         if (params.search) {

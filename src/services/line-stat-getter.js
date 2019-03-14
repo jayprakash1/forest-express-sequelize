@@ -184,7 +184,8 @@ function LineStatGetter(model, params, opts) {
       where: this.getFilters(),
       group: getGroupBy(),
       order: getOrder(),
-      raw: true
+      raw: true,
+      requestUser: {role: 'admin'},
     })
     .then(function (records) {
       return P.map(records, function (record) {

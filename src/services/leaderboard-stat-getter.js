@@ -45,7 +45,8 @@ function LeaderboardStatGetter(model, modelRelationship, params, options) {
         group: groupBy,
         order: [[options.sequelize.literal('value'), 'DESC']],
         limit: limit,
-        raw: true
+        raw: true,
+        requestUser: {role: 'admin'},
       })
       .then(function (records) {
         records = records.map(function (data) {

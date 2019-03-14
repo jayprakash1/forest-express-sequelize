@@ -51,7 +51,8 @@ function HasManyGetter(model, association, opts, params) {
         required: false,
         where: where,
         include: include
-      }]
+      }],
+      requestUser: { role: 'admin' }
     }).then(function (record) {
       return record[params.associationName];
     });
