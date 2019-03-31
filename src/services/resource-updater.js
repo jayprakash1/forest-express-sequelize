@@ -6,6 +6,7 @@ var ResourceGetter = require('./resource-getter');
 var CompositeKeysManager = require('./composite-keys-manager');
 var ResourceFinder = require('./resource-finder');
 
+var forceAdminOption = {requestUser: {role: 'admin'}};
 function ResourceUpdater(model, params, newRecord) {
   var schema = Interface.Schemas.schemas[model.name];
 
@@ -21,9 +22,9 @@ function ResourceUpdater(model, params, newRecord) {
             record[attribute] = value;
           });
 
-          return record.validate()
+          return record.validate(forceAdminOption)
             .catch(function (error) { throw new ErrorHTTP422(error.message); })
-            .then(function () { return record.save(); });
+            .then(function () { return record.save(forceAdminOption); });
         }
       })
       .then(function () {

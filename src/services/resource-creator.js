@@ -6,6 +6,7 @@ var Interface = require('forest-express');
 var ResourceGetter = require('./resource-getter');
 var CompositeKeysManager = require('./composite-keys-manager');
 
+var forceAdminOption = {requestUser: {role: 'admin'}};
 function ResourceCreator(model, params) {
   var schema = Interface.Schemas.schemas[model.name];
 
@@ -23,12 +24,12 @@ function ResourceCreator(model, params) {
 
     return P.all(promises)
       .then(function () {
-        return recordCreated.validate()
+        return recordCreated.validate(forceAdminOption)
           .catch(function (error) {
             throw new ErrorHTTP422(error.message);
           });
       })
-      .then(function () { return recordCreated.save(); })
+      .then(function () { return recordCreated.save(forceAdminOption); })
       .then(function (record) {
         var promisesAfterSave = [];
 
@@ -37,9 +38,9 @@ function ResourceCreator(model, params) {
         if (model.associations) {
           _.forOwn(model.associations, function (association, name) {
             if (association.associationType === 'HasOne') {
-              promisesAfterSave.push(record['set' + _.upperFirst(name)](params[name]));
+              promisesAfterSave.push(record['set' + _.upperFirst(name)](params[name], forceAdminOption));
             } else if (['BelongsToMany', 'HasMany'].indexOf(association.associationType) > -1) {
-              promisesAfterSave.push(record['add' + _.upperFirst(name)](params[name]));
+              promisesAfterSave.push(record['add' + _.upperFirst(name)](params[name], forceAdminOption));
             }
           });
         }
