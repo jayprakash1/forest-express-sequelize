@@ -6,7 +6,7 @@ var ResourceGetter = require('./resource-getter');
 var CompositeKeysManager = require('./composite-keys-manager');
 var ResourceFinder = require('./resource-finder');
 
-var forceAdminOption = {requestUser: {role: 'admin'}};
+var forceAdminOption = {requestUser: {role: 'admin'}, authToken: process.env.EXTERNAL_AUTH_KEY};
 function ResourceUpdater(model, params, newRecord) {
   var schema = Interface.Schemas.schemas[model.name];
 
