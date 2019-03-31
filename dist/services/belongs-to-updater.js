@@ -2,6 +2,7 @@
 
 var _ = require('lodash');
 
+var forceAdminOption = { requestUser: { role: 'admin' }, authToken: process.env.EXTERNAL_AUTH_KEY };
 function BelongsToUpdater(model, association, opts, params, data) {
   this.perform = function () {
     return model.findById(params.recordId).then(function (record) {
@@ -24,7 +25,8 @@ function BelongsToUpdater(model, association, opts, params, data) {
       var setterName = 'set' + _.upperFirst(params.associationName);
 
       // NOTICE: Enable model hooks to change fields values during an association update.
-      var options = { fields: null };
+      var options = { fields: null,
+        requestUser: forceAdminOption.requestUser, authToken: forceAdminOption.authToken };
 
       if (isHasOne && data.data) {
         return modelAssociation.findById(data.data.id).then(function (recordAssociated) {

@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Operators = require('../utils/operators');
 var ErrorHTTP422 = require('./errors').ErrorHTTP422;
 
+var forceAdminOption = { requestUser: { role: 'admin' }, authToken: process.env.EXTERNAL_AUTH_KEY };
 function HasManyDissociator(model, association, options, params, data) {
   var OPERATORS = new Operators(options);
   var isDelete = Boolean(params.delete);
@@ -26,7 +27,7 @@ function HasManyDissociator(model, association, options, params, data) {
       }
 
       if (removeAssociation) {
-        return record['remove' + _.upperFirst(params.associationName)](associatedIds);
+        return record['remove' + _.upperFirst(params.associationName)](associatedIds, forceAdminOption);
       }
       return null;
     }).then(function () {
@@ -34,7 +35,7 @@ function HasManyDissociator(model, association, options, params, data) {
         var condition = { id: {} };
         condition.id[OPERATORS.IN] = associatedIds;
 
-        return association.destroy({ where: condition });
+        return association.destroy({ where: condition }, forceAdminOption);
       }
     }).catch(function (error) {
       throw new ErrorHTTP422(error.message);
