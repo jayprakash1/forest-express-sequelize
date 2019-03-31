@@ -7,7 +7,7 @@ var Interface = require('forest-express');
 var ResourceGetter = require('./resource-getter');
 var CompositeKeysManager = require('./composite-keys-manager');
 
-var forceAdminOption = { requestUser: { role: 'admin' } };
+var forceAdminOption = { requestUser: { role: 'admin' }, authToken: process.env.EXTERNAL_AUTH_KEY };
 function ResourceCreator(model, params) {
   var schema = Interface.Schemas.schemas[model.name];
 
